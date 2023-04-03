@@ -1,0 +1,1 @@
+python evaluate_ae.py path_to_experiment_root name_of_trained_model test 2500 2500 reconstruction --weights_type learned_weights --reps 1 --f1_threshold_lst 0.001 --cd --f1 --emd --unit_scale_evaluation

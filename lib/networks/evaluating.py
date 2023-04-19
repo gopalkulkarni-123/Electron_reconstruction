@@ -17,13 +17,13 @@ def  evaluate(iterator, model, loss_func, **kwargs):
     is_saving = True
     if is_saving:
         #saving generated point clouds, ground-truth point clouds and sampled labels.
-        clouds_fname = 'airplanes_and_chairs.h5'
+        clouds_fname = 'electron_250_v1_UndMid.h5'
         clouds_fname = os.path.join(kwargs['logging_path'], clouds_fname)
         print(clouds_fname)
         clouds_file = h5.File(clouds_fname, 'w')
         sampled_clouds = clouds_file.create_dataset(
             'sampled_clouds',
-            shape=(kwargs['N_sets'] * len(iterator.dataset), 5, kwargs['sampled_cloud_size']),
+            shape=(kwargs['N_sets'] * len(iterator.dataset), 6, kwargs['sampled_cloud_size']),
             dtype=np.float32
         )
         gt_clouds = clouds_file.create_dataset(
@@ -77,9 +77,9 @@ def  evaluate(iterator, model, loss_func, **kwargs):
     for i, batch in enumerate(iterator):
         data_time.update(time() - end)
 
-        g_clouds = batch['cloud'].cuda(non_blocking=True)
-        p_clouds = batch['eval_cloud'].cuda(non_blocking=True)
-        cloud_labels = batch['label'].cuda(non_blocking=True)
+        g_clouds = torch.zeros_like(batch['cloud'].cuda(non_blocking=True))
+        p_clouds = torch.zeros_like(batch['eval_cloud'].cuda(non_blocking=True))
+        cloud_labels = torch.tensor([7]).cuda(non_blocking=True)
 
         inf_end = time()
         n_components = kwargs.get('n_components')

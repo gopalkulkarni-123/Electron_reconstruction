@@ -9,7 +9,7 @@ cloud_recenter2orig: false
 cloud_rescale2orig: false
 cloud_scale: true
 cloud_scale_scale: 2.0
-cloud_size: 2048
+cloud_size: 5000
 cloud_translate: false
 cloud_translate_shift:
 - 0.00055863
@@ -38,16 +38,16 @@ model_name: generative_model_airplane_pretrained.pkl
 n_components: 4
 n_epochs: 800
 num_workers: 1
-p_decoder_base_type: free
+p_decoder_base_type: fixed
 p_decoder_base_var: -3.9551
 p_decoder_n_features: 64
 p_decoder_n_flows: 21
-p_latent_space_size: 3
+p_latent_space_size: 6
 p_prior_n_layers: 1
 params_reduce_mode: depth_and_feature
 path2data: D:\Masters\Univerities\TU Dresden\Post_Admit\Studies\4th Sem\RP\data
 path2save: ./results
-pc_enc_init_n_channels: 11
+pc_enc_init_n_channels: 6
 pc_enc_init_n_features: 64
 pc_enc_n_features:
 - 128

@@ -11,10 +11,13 @@ from .decoders import GlobalRNVPDecoder
 from .decoders import LocalCondRNVPDecoder
 
 def category_condition(data, num_categories, cloud_labels):
-    zeros = torch.zeros(num_categories).cuda()
-    for i in range (cloud_labels.shape[0]):
-        zeros[int(cloud_labels[i])] = 1
-        torch.cat((zeros, data[i]), dim=0)
+
+    data = data.cpu()
+    zeros = torch.zeros(data.shape[0], num_categories)
+    zeros[torch.arange(data.shape[0]), cloud_labels.long()] = 1
+    data[:, -num_categories:] = zeros
+    data = data.to('cuda:0')
+
     return data
 
 class Local_Cond_RNVP_MC_Global_RNVP_VAE(nn.Module):
@@ -211,7 +214,7 @@ class Local_Cond_RNVP_MC_Global_RNVP_VAE(nn.Module):
             output['p_prior_samples'] = [self.reparameterize(output['p_prior_mus'][0], output['p_prior_logvars'][0])]
             g_sample_labeled = category_condition(g_sample, 8, cloud_labels)
             if self.mode == 'generating':
-                cloud_labels = torch.tensor([1])
+                #cloud_labels = torch.tensor([1])
                 g_sample_labeled = category_condition(g_sample, 8, cloud_labels)
             buf = pc_decoder(output['p_prior_samples'][0], g_sample_labeled, mode='direct')
             output['p_prior_samples'] += buf[0]
